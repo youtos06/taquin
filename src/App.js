@@ -2,10 +2,22 @@ import React from "react";
 import "./App.css";
 import View from "./Components/View";
 import NavBar from "./Components/NavBar";
+import background from "./backGround.jpg";
 
 function App() {
   return (
-    <div className="App">
+    <div
+      className="App"
+      style={{
+        minHeight: "100%",
+        height: "auto",
+        background: `url(${background}) no-repeat center center fixed`,
+        backgroundSize: "cover",
+        WebkitBackgroundSize: "cover",
+        OBackgroundSize: "cover",
+        MozBackgroundSize: "cover"
+      }}
+    >
       <NavBar></NavBar>
       <View></View>
     </div>

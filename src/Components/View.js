@@ -14,6 +14,26 @@ export default function View() {
     r21: null,
     r22: null
   });
+  const [T1, setT1] = useState([
+    [null, null, null],
+    [null, null, null],
+    [null, null, null]
+  ]);
+  const [T2, setT2] = useState([
+    [null, null, null],
+    [null, null, null],
+    [null, null, null]
+  ]);
+  const [T3, setT3] = useState([
+    [null, null, null],
+    [null, null, null],
+    [null, null, null]
+  ]);
+  const [T4, setT4] = useState([
+    [null, null, null],
+    [null, null, null],
+    [null, null, null]
+  ]);
   const [errors, setErrors] = useState(null);
 
   const handleChange = ({ currentTarget: input }) => {
@@ -43,8 +63,8 @@ export default function View() {
       <div>
         <h1>Rules of the game</h1>
         <p>
-          fill the inputs from 1 to 8 value ( keeping one empty) and the IA will
-          try to list the road to the solution
+          Fill the inputs from 1 to 8 value ( keeping one empty) and the{" "}
+          <strong>IA</strong> will try to list the road to the solution
         </p>
         <div>
           <form>
@@ -138,9 +158,92 @@ export default function View() {
           </div>
         )}
         <div style={{ padding: "auto", margin: "auto", paddingTop: 30 }}>
-          <button className="btn btn-primary">start the fun</button>
+          <button className="btn btn-danger">start the fun</button>
         </div>
       </div>
+
+      <table>
+        <tbody>
+          <td>
+            <table>
+              <tbody>
+                <tr>
+                  <td>{T1[0][0]}</td>
+                  <td>{T1[0][1]}</td>
+                  <td>{T1[0][2]}</td>
+                </tr>
+                <tr>
+                  <td>{T1[1][0]}</td>
+                  <td>{T1[1][1]}</td>
+                  <td>{T1[1][2]}</td>
+                </tr>
+                <tr>
+                  <td>{T1[2][0]}</td>
+                  <td>{T1[2][1]}</td>
+                  <td>{T1[2][2]}</td>
+                </tr>
+              </tbody>
+            </table>
+            <table>
+              <tbody>
+                <tr>
+                  <td>{T2[0][0]}</td>
+                  <td>{T2[0][1]}</td>
+                  <td>{T2[0][2]}</td>
+                </tr>
+                <tr>
+                  <td>{T2[1][0]}</td>
+                  <td>{T2[1][1]}</td>
+                  <td>{T2[1][2]}</td>
+                </tr>
+                <tr>
+                  <td>{T2[2][0]}</td>
+                  <td>{T2[2][1]}</td>
+                  <td>{T2[2][2]}</td>
+                </tr>
+              </tbody>
+            </table>
+            <table>
+              <tbody>
+                <tr>
+                  <td>{T3[0][0]}</td>
+                  <td>{T3[0][1]}</td>
+                  <td>{T3[0][2]}</td>
+                </tr>
+                <tr>
+                  <td>{T3[1][0]}</td>
+                  <td>{T3[1][1]}</td>
+                  <td>{T3[1][2]}</td>
+                </tr>
+                <tr>
+                  <td>{T3[2][0]}</td>
+                  <td>{T3[2][1]}</td>
+                  <td>{T3[2][2]}</td>
+                </tr>
+              </tbody>
+            </table>
+            <table>
+              <tbody>
+                <tr>
+                  <td>{T4[0][0]}</td>
+                  <td>{T4[0][1]}</td>
+                  <td>{T4[0][2]}</td>
+                </tr>
+                <tr>
+                  <td>{T4[1][0]}</td>
+                  <td>{T4[1][1]}</td>
+                  <td>{T4[1][2]}</td>
+                </tr>
+                <tr>
+                  <td>{T4[2][0]}</td>
+                  <td>{T4[2][1]}</td>
+                  <td>{T4[2][2]}</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tbody>
+      </table>
     </div>
   );
 }

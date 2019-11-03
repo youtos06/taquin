@@ -1,20 +1,22 @@
 #example {
   background-color: #33ff99;
-  max-width: 230px;
+  max-width: 200px;
   max-height: 220px;
   border: 2px solid black;
   margin: auto;
   padding: auto;
 }
-#example td,
+td,
 input {
-  max-width: 80px;
-  max-height: 80px;
-  min-height: 80px;
-  font-size: 50px;
+  max-width: 60px;
+  max-height: 60px;
+  min-height: 60px;
+  font-size: 40px;
   margin: auto;
 }
+
 p,
 h1 {
   text-align: center;
+  color: white;
 }
