@@ -52,3 +52,11 @@ export function validate(startObject) {
   //console.log(validationTable);
   return false; // validation is a must button will be clickable now
 }
+
+export function createTable(startObject) {
+  return [
+    [startObject["r00"], startObject["r01"], startObject["r02"]],
+    [startObject["r10"], startObject["r11"], startObject["r12"]],
+    [startObject["r20"], startObject["r21"], startObject["r22"]]
+  ];
+}
