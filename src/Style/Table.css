@@ -1,0 +1,20 @@
+#example {
+  background-color: #33ff99;
+  max-width: 230px;
+  max-height: 220px;
+  border: 2px solid black;
+  margin: auto;
+  padding: auto;
+}
+#example td,
+input {
+  max-width: 80px;
+  max-height: 80px;
+  min-height: 80px;
+  font-size: 50px;
+  margin: auto;
+}
+p,
+h1 {
+  text-align: center;
+}
