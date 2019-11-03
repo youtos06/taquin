@@ -1,44 +1,32 @@
 import React, { useState } from "react";
 import TableStyle from "../Style/Table.css";
+import { heuristique, returnTables } from "./heuristic";
 import {
   validateChange,
   verifyChange,
   validate,
   createTable
+  //ObjToArray
 } from "./Fonctions";
 
 export default function View() {
   const [startObject, setStartObject] = useState({
-    r00: null,
-    r01: null,
-    r02: null,
-    r10: null,
-    r11: null,
-    r12: null,
-    r20: null,
-    r21: null,
-    r22: null
+    r00: "",
+    r01: "",
+    r02: "",
+    //second level
+    r10: "",
+    r11: "",
+    r12: "",
+    // third level
+    r20: "",
+    r21: "",
+    r22: ""
   });
-  const [T1, setT1] = useState([
-    [null, null, null],
-    [null, null, null],
-    [null, null, null]
-  ]);
-  const [T2, setT2] = useState([
-    [null, null, null],
-    [null, null, null],
-    [null, null, null]
-  ]);
-  const [T3, setT3] = useState([
-    [null, null, null],
-    [null, null, null],
-    [null, null, null]
-  ]);
-  const [T4, setT4] = useState([
-    [null, null, null],
-    [null, null, null],
-    [null, null, null]
-  ]);
+  const [T1, setT1] = useState([["", "", ""], ["", "", ""], ["", "", ""]]);
+  const [T2, setT2] = useState([["", "", ""], ["", "", ""], ["", "", ""]]);
+  const [T3, setT3] = useState([["", "", ""], ["", "", ""], ["", "", ""]]);
+  const [T4, setT4] = useState([["", "", ""], ["", "", ""], ["", "", ""]]);
   const [errors, setErrors] = useState(null);
 
   const handleChange = ({ currentTarget: input }) => {
@@ -53,12 +41,17 @@ export default function View() {
       setErrors("Please Set a valid 0 < (integer) number < 9");
     }
   };
+
   const startfun = () => {
     if (!validate(startObject)) {
-      setT1(createTable(startObject));
-      setT2(createTable(startObject));
-      setT3(createTable(startObject));
-      setT4(createTable(startObject));
+      const init = createTable(startObject); // turn object to table
+      //console.log(init);
+      const tables = returnTables(init);
+      //console.log(tables);
+      setT1(tables[0]);
+      setT2(tables[1]);
+      setT3(tables[2]);
+      setT4(tables[3]);
     }
   };
 
