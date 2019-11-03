@@ -1,11 +1,11 @@
 import React from "react";
-
+import Cv from "./files/Youness_El_HOUSNI_CV.pdf";
 export default function NavBar() {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" href="mailto:elhousni.yns@gmail.com">
-          Youness El Housni
+          Youness El Housni <i class="fa fa-envelope"></i>
         </a>
         <button
           className="navbar-toggler"
@@ -22,7 +22,7 @@ export default function NavBar() {
           <ul className="navbar-nav">
             <li className="nav-item ">
               <a className="nav-link" href="https://github.com/youtos06">
-                GitHub
+                GitHub <i class="fa fa-github"></i>
               </a>
             </li>
             <li className="nav-item">
@@ -30,7 +30,12 @@ export default function NavBar() {
                 className="nav-link"
                 href="https://www.linkedin.com/in/youness-el-housni-a0b4a4166/"
               >
-                Linkdin
+                Linkedin <i class="fa fa-linkedin"></i>
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href={Cv}>
+                Download My CV <i class="fa fa-download"></i>
               </a>
             </li>
           </ul>
