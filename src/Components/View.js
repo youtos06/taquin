@@ -48,6 +48,7 @@ export default function View() {
       //console.log(init);
       const tables = returnTables(init);
       //console.log(tables);
+
       setT1(tables[0]);
       setT2(tables[1]);
       setT3(tables[2]);

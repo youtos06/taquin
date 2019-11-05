@@ -95,3 +95,15 @@ export function returnTables(init) {
 
   return TableRes;
 }
+
+export function heuristicOfTables(tables) {
+  let hot = []; // heuristic of tables
+  for (let index = 0; index < tables.length; index++) {
+    hot.push(heuristique(tables[index]));
+  }
+  return hot;
+}
+
+// history
+// not visited
+//solution (arrayState,HistoryArrays,HistoryHeusteric,visited,before)
