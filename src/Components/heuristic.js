@@ -1,4 +1,5 @@
 export function heuristique(Init) {
+  console.log(Init);
   var i = 9;
   if (Init[0][0] === 1) {
     i--;
@@ -47,7 +48,7 @@ export function returnTables(init) {
   const ligne = pos[0]; // position de la ligne de empty
   const col = pos[1]; // position de la colonne de empty
   let TableRes = [];
-  console.log(pos, init);
+  //console.log(pos, init);
 
   // table to change by the case above
   if (ligne < init.length - 1) {

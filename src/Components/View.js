@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TableStyle from "../Style/Table.css";
-import { heuristique, returnTables } from "./heuristic";
+import { heuristique, returnTables, heuristicOfTables } from "./heuristic";
 import {
   validateChange,
   verifyChange,
@@ -8,6 +8,8 @@ import {
   createTable
   //ObjToArray
 } from "./Fonctions";
+import { inArrayList, findMinIndex, findWhereToPut } from "./arrayFunctions";
+import ArrayPosibilities from "./ArrayPosibilities";
 
 export default function View() {
   const [startObject, setStartObject] = useState({
@@ -45,15 +47,78 @@ export default function View() {
   const startfun = () => {
     if (!validate(startObject)) {
       const init = createTable(startObject); // turn object to table
-      //console.log(init);
-      const tables = returnTables(init);
-      //console.log(tables);
-
-      setT1(tables[0]);
-      setT2(tables[1]);
-      setT3(tables[2]);
-      setT4(tables[3]);
+      funplay(init, [], [], []);
     }
+  };
+
+  const funplay = (arrayState, history, historyHi, visisted) => {
+    if (heuristique(arrayState) === 0) {
+      return true;
+    }
+    let arrayPos = returnTables(arrayState);
+
+    setT1(arrayPos[0]);
+    setT2(arrayPos[1]);
+    setT3(arrayPos[2]);
+    setT4(arrayPos[3]); // possible ways from  current state
+
+    let arrayPosHeuristics = heuristicOfTables(arrayPos);
+    visisted.splice(0, 0, JSON.parse(JSON.stringify(arrayState))); // add as first element
+    let minIndex = findMinIndex(arrayPosHeuristics); // find min index
+
+    let useOfHistory = false; // if it stayed false we use first value of history as new state of taquin
+    // refil minIndex in case all minIndexes are already visited
+    while (minIndex.length !== 0) {
+      let index = 0; // for finding value of index => will be used in finding index of min none visited
+      let findVisited = false; // in case all arrays in min index where visited
+
+      while (index < minIndex.length) {
+        let value = inArrayList(visisted, arrayPos[minIndex[index]]); // value in visisted + 1
+        if (value) {
+          arrayPos.splice(value - 1, 1);
+          arrayPosHeuristics.splice(value - 1, 1);
+          index++;
+          findVisited = true; // value of index had been visited
+        } else {
+          arrayState = arrayPos.splice(value - 1, 1); // value is new state of taquin
+          if (arrayState.length !== 3) {
+            arrayState = arrayState[0];
+          }
+          arrayPosHeuristics.splice(value - 1, 1);
+          findVisited = false;
+          break; // out of while
+        }
+      }
+
+      if (findVisited) {
+        minIndex = findMinIndex(arrayPosHeuristics);
+      } else {
+        useOfHistory = true; // in this case some possibilities will be stocked in hostory
+        break; // the other values will be used in history
+      }
+    } // in this case there is two possibilities indexes had been found
+
+    if (useOfHistory) {
+      for (let index = 0; index < arrayPos.length; index++) {
+        if (!inArrayList(history, arrayPos[index])) {
+          let tempHeus = heuristique(arrayPos[index]);
+          let historyIndexAdd = findWhereToPut(tempHeus, historyHi);
+          historyHi.splice(historyIndexAdd, 0, tempHeus);
+          historyHi.splice(historyIndexAdd, 0, arrayPos[index]);
+        }
+      }
+      //console.log(arrayState);
+      setTimeout(() => {
+        funplay(arrayState, history, historyHi, visisted);
+      }, 1000);
+    } else {
+      arrayState = JSON.parse(JSON.stringify(history.splice(0, 1)));
+      historyHi.splice(0, 1);
+      setTimeout(() => {
+        funplay(arrayState, history, historyHi, visisted);
+      }, 1000);
+    }
+    return true;
   };
 
   return (
@@ -165,85 +230,7 @@ export default function View() {
           </button>
         </div>
       </div>
-      <div className="resTables">
-        <h2>THE RESULT OF EACH ITERATION</h2>
-        <table>
-          <tbody>
-            <tr>
-              <td>{T1[0][0]}</td>
-              <td>{T1[0][1]}</td>
-              <td>{T1[0][2]}</td>
-            </tr>
-            <tr>
-              <td>{T1[1][0]}</td>
-              <td>{T1[1][1]}</td>
-              <td>{T1[1][2]}</td>
-            </tr>
-            <tr>
-              <td>{T1[2][0]}</td>
-              <td>{T1[2][1]}</td>
-              <td>{T1[2][2]}</td>
-            </tr>
-          </tbody>
-        </table>
-        <table>
-          <tbody>
-            <tr>
-              <td>{T2[0][0]}</td>
-              <td>{T2[0][1]}</td>
-              <td>{T2[0][2]}</td>
-            </tr>
-            <tr>
-              <td>{T2[1][0]}</td>
-              <td>{T2[1][1]}</td>
-              <td>{T2[1][2]}</td>
-            </tr>
-            <tr>
-              <td>{T2[2][0]}</td>
-              <td>{T2[2][1]}</td>
-              <td>{T2[2][2]}</td>
-            </tr>
-          </tbody>
-        </table>
-        <table>
-          <tbody>
-            <tr>
-              <td>{T3[0][0]}</td>
-              <td>{T3[0][1]}</td>
-              <td>{T3[0][2]}</td>
-            </tr>
-            <tr>
-              <td>{T3[1][0]}</td>
-              <td>{T3[1][1]}</td>
-              <td>{T3[1][2]}</td>
-            </tr>
-            <tr>
-              <td>{T3[2][0]}</td>
-              <td>{T3[2][1]}</td>
-              <td>{T3[2][2]}</td>
-            </tr>
-          </tbody>
-        </table>
-        <table>
-          <tbody>
-            <tr>
-              <td>{T4[0][0]}</td>
-              <td>{T4[0][1]}</td>
-              <td>{T4[0][2]}</td>
-            </tr>
-            <tr>
-              <td>{T4[1][0]}</td>
-              <td>{T4[1][1]}</td>
-              <td>{T4[1][2]}</td>
-            </tr>
-            <tr>
-              <td>{T4[2][0]}</td>
-              <td>{T4[2][1]}</td>
-              <td>{T4[2][2]}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <ArrayPosibilities T1={T1} T2={T2} T3={T3} T4={T4}></ArrayPosibilities>
     </div>
   );
 }
