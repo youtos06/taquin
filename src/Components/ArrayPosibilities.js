@@ -3,7 +3,7 @@ import React from "react";
 const ArrayPosibilities = ({ T1, T2, T3, T4 }) => {
   return (
     <div className="resTables">
-      <h2>THE RESULT OF EACH ITERATION</h2>
+      <h2>POSSIBLE ITERATION</h2>
       <table>
         <tbody>
           <tr>

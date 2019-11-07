@@ -1,5 +1,5 @@
 export function heuristique(Init) {
-  console.log(Init);
+  //console.log(Init);
   var i = 9;
   if (Init[0][0] === 1) {
     i--;

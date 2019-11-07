@@ -31,6 +31,9 @@ input {
   font-size: 40px;
   margin: auto;
 }
+#tableSolution {
+  border: 3px solid #232365;
+}
 
 p,
 h1,

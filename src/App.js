@@ -3,6 +3,7 @@ import "./App.css";
 import View from "./Components/View";
 import NavBar from "./Components/NavBar";
 import background from "./backGround.jpg";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         MozBackgroundSize: "cover"
       }}
     >
+      <ToastContainer />
       <NavBar></NavBar>
       <View></View>
     </div>

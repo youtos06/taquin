@@ -65,3 +65,22 @@ export function emptyTable(array) {
   }
   return true;
 }
+
+export function deleteNullArrays(arrayOfArrays) {
+  let index = 0;
+  while (index < arrayOfArrays.length) {
+    if (emptyTable(arrayOfArrays[index])) {
+      arrayOfArrays.splice(index, 1);
+    } else {
+      index++;
+    }
+  }
+  return arrayOfArrays;
+}
+
+export function lowerByOne(arr) {
+  for (let index = 0; index < arr.length; index++) {
+    arr[index]--;
+  }
+  return arr;
+}
