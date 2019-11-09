@@ -67,6 +67,7 @@ export default function View() {
   };
 
   const funplay = (arrayState, history, historyHi, visited) => {
+    console.log(history, visited);
     if (heuristique(arrayState) === 0) {
       return true;
     }
@@ -137,7 +138,11 @@ export default function View() {
       //console.log(arrayState);
       setTimeout(() => {
         funplay(arrayState, history, historyHi, visited);
-      }, 1000);
+      }, 150);
+
+      // history = [];
+      // historyHi = [];
+      // visited = [];
     } else {
       // the possibilities provided by a previous state i sbtter
       toast.info("Return to history Array for a better iteration");
@@ -146,20 +151,16 @@ export default function View() {
       if (array.length !== 3) {
         array = array[0];
       }
-      while (inArrayList(visited, array)) {
-        let array = history.splice(0, 1);
-        historyHi.splice(0, 1);
-        if (array.length !== 3) {
-          array = array[0];
-        }
-      }
       arrayState = array;
 
       setArraySer(arrayState);
 
       setTimeout(() => {
         funplay(arrayState, history, historyHi, visited);
-      }, 1000);
+      }, 150);
+      // history = [];
+      // historyHi = [];
+      // visited = [];
     }
     return true;
   };

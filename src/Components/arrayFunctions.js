@@ -27,8 +27,9 @@ export function inArrayList(list, arr) {
 export function findMinIndex(arr) {
   // return array of index's of min values maybe two times the array include 5
   let values = [];
+  let min = 0;
   for (let index = 0; index < arr.length; index++) {
-    let min = 0; // avoid probs in case arr is empty we return empty array
+    // avoid probs in case arr is empty we return empty array
     if (values.length > 0) {
       // first case
       min = values[0];
@@ -37,7 +38,7 @@ export function findMinIndex(arr) {
       // case its minimum
       values = [];
       values.push(index);
-    } else if ((arr[min] = arr[index])) {
+    } else if (arr[min] === arr[index]) {
       //case two minimums
       values.push(index);
     }
