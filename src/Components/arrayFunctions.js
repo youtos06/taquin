@@ -1,3 +1,5 @@
+import { heuristique } from "./heuristic";
+
 export function equalArray(arr1, arr2) {
   if (arr1.length !== arr2.length) {
     return false;
@@ -84,4 +86,22 @@ export function lowerByOne(arr) {
     arr[index]--;
   }
   return arr;
+}
+
+// to reach a better speed in search for visited states i chooseed a structure like the next for the object
+// insetead of pusing into array visited
+// we Make visited into the next obj
+// visited = {
+//   '1': [...]
+//   '2': [...]
+// } where 1 and 2 is the heuristic of the arrays (like level search)
+
+export function findInVisited(visited, array) {
+  let arrayHeuristic = heuristique(array); // level of the array
+  //less calculation for visited arrays
+  if (inArrayList(visited[arrayHeuristic], array)) {
+    // visited[key] => es6 feature
+    return true; // array is visited and belongs to it heurstic level
+  }
+  return false;
 }

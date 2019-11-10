@@ -14,7 +14,8 @@ import {
   findMinIndex,
   findWhereToPut,
   deleteNullArrays,
-  lowerByOne
+  lowerByOne,
+  findInVisited
 } from "./arrayFunctions";
 import ArrayPosibilities from "./ArrayPosibilities";
 import { toast } from "react-toastify";
@@ -60,18 +61,32 @@ export default function View() {
 
   const startfun = () => {
     //console.log(1);
+
+    // build visited object
+    let visited = {
+      "1": [], // normally heuristic value of 1 isn't possible cause min is 2 wrong values but we add for algo case
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": [],
+      "7": [],
+      "8": [],
+      "9": []
+    };
     if (!validate(startObject)) {
       const init = createTable(startObject); // turn object to table
-      funplay(init, [], [], []);
+      funplay(init, [], [], visited);
     }
   };
 
   const funplay = (arrayState, history, historyHi, visited) => {
-    console.log(history, visited);
-    if (heuristique(arrayState) === 0) {
+    //console.log(history, visited);
+    let heuristic = heuristique(arrayState); // for less calculation we create this variable
+    if (heuristic === 0) {
       return true;
     }
-    visited.push(arrayState);
+    visited[heuristic].push(arrayState); //push into visited with that level
     let arrayPos = returnTables(arrayState);
 
     setT1(arrayPos[0]);
@@ -80,14 +95,14 @@ export default function View() {
     setT4(arrayPos[3]); // possible ways from  current state
     arrayPos = deleteNullArrays(arrayPos); // possibilities to be saved in history
     for (let pos = 0; pos < arrayPos.length; pos++) {
-      if (inArrayList(visited, arrayPos[pos])) {
+      if (findInVisited(visited, arrayPos[pos])) {
         history.push(arrayPos[pos]);
         historyHi.push(heuristique(arrayPos[pos]));
       }
     }
     //console.log(arrayPos);
     let arrayPosHeuristics = heuristicOfTables(arrayPos);
-    visited.splice(0, 0, JSON.parse(JSON.stringify(arrayState))); // add as first element
+    visited[heuristic].splice(0, 0, JSON.parse(JSON.stringify(arrayState))); // add as first element of level array for less calculation
     let minIndex = findMinIndex(arrayPosHeuristics); // find min index
 
     let useOfHistory = false; // if it stayed false we use first value of history as new state of taquin
@@ -98,7 +113,7 @@ export default function View() {
 
       if (minIndex.length > 0) {
         while (index < minIndex.length) {
-          let value = inArrayList(visited, arrayPos[minIndex[index]]); // value in visited + 1
+          let value = findInVisited(visited, arrayPos[minIndex[index]]); // value in visited + 1
           if (value) {
             arrayPos.splice(minIndex[index], 1);
             arrayPosHeuristics.splice(minIndex[index], 1);
@@ -139,10 +154,6 @@ export default function View() {
       setTimeout(() => {
         funplay(arrayState, history, historyHi, visited);
       }, 150);
-
-      // history = [];
-      // historyHi = [];
-      // visited = [];
     } else {
       // the possibilities provided by a previous state i sbtter
       toast.info("Return to history Array for a better iteration");
@@ -158,9 +169,6 @@ export default function View() {
       setTimeout(() => {
         funplay(arrayState, history, historyHi, visited);
       }, 150);
-      // history = [];
-      // historyHi = [];
-      // visited = [];
     }
     return true;
   };
