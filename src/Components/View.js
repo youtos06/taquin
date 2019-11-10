@@ -110,16 +110,24 @@ export default function View() {
     setT3(arrayPos[2]);
     setT4(arrayPos[3]); // possible ways from  current state
     arrayPos = deleteNullArrays(arrayPos); // possibilities to be saved in history
-    for (let pos = 0; pos < arrayPos.length; pos++) {
-      if (findInObject(visited, arrayPos[pos])) {
-        let tempHeuristic = heuristique(arrayPos[pos]);
-        history[tempHeuristic].unshift(arrayPos);
+    for (let indexPos = 0; indexPos < arrayPos.length; indexPos++) {
+      if (
+        !findInObject(visited, arrayPos[indexPos]) &&
+        !findInObject(history, arrayPos[indexPos])
+      ) {
+        if (arrayPos[indexPos].length !== 0) {
+          if (arrayPos[indexPos].length !== 3) {
+            arrayPos[indexPos] = arrayPos[indexPos][0];
+          }
+          let tempHeuristic = heuristique(arrayPos[indexPos]);
+          history[tempHeuristic].unshift(arrayPos[indexPos]);
+        }
       }
     }
     //console.log(arrayPos);
     let arrayPosHeuristics = heuristicOfTables(arrayPos);
     visited[heuristic].splice(0, 0, JSON.parse(JSON.stringify(arrayState))); // add as first element of level array for less calculation
-    let minIndex = findMinIndex(arrayPosHeuristics); // find min index
+    let minIndex = findMinIndex(arrayPosHeuristics, arrayPos); // find min index
 
     let useOfHistory = false; // if it stayed false no possibilitie will be stocked in memory
     // refil minIndex in case all minIndexes are already visited
@@ -150,7 +158,7 @@ export default function View() {
       }
 
       if (findVisited) {
-        minIndex = findMinIndex(arrayPosHeuristics);
+        minIndex = findMinIndex(arrayPosHeuristics, arrayPos);
       } else {
         useOfHistory = true; // in this case some possibilities will be stocked in hostory
         break; // the other values will be used in history
@@ -159,15 +167,23 @@ export default function View() {
 
     if (useOfHistory) {
       for (let index = 0; index < arrayPos.length; index++) {
-        if (!findInObject(history, arrayPos[index])) {
-          let tempHeus = heuristique(arrayPos[index]);
-          history[tempHeus].unshift(arrayPos[index]);
+        if (
+          !findInObject(visited, arrayPos[index]) &&
+          !findInObject(history, arrayPos[index])
+        ) {
+          if (arrayPos[index].length !== 0) {
+            if (arrayPos[index].length !== 3) {
+              arrayPos[index] = arrayPos[index][0];
+            }
+            let tempHeus = heuristique(arrayPos[index]);
+            history[tempHeus].unshift(arrayPos[index]);
+          }
         }
       }
       //console.log(arrayState);
       setTimeout(() => {
         funplay(arrayState, history, visited);
-      }, 150);
+      }, 100);
     } else {
       // the possibilities provided by a previous state i sbtter
       toast.info("Return to history Array for a better iteration");

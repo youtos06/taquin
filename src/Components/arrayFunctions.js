@@ -1,4 +1,4 @@
-import { heuristique } from "./heuristic";
+import { heuristique, returnTables, heuristicOfTables } from "./heuristic";
 
 export function equalArray(arr1, arr2) {
   if (arr1.length !== arr2.length) {
@@ -26,14 +26,42 @@ export function inArrayList(list, arr) {
   return false; // return false
 }
 
-export function findMinIndex(arr) {
+function sortBestChilds(values, arrayPos) {
+  //console.log(arrayPos, values);
+  //values : indexes of min possibilities ,arr of possibilities
+  // return indexes based on the better choice
+  let sort = [];
+  let min = 0;
+  for (let index = 0; index < values.length; index++) {
+    let array = arrayPos[values[index]]; // array with index declared in the value table
+    //console.log(array);
+    let arrayChilds = returnTables(array);
+    let hot = heuristicOfTables(arrayChilds);
+    let temp = Math.min(hot);
+    if (index === 0) {
+      min = temp;
+      sort.push(values[index]);
+    } else {
+      if (temp < min) {
+        // the child with the possibilities of min heuristic values is the better choice
+        min = temp;
+        sort.unshift(values[index]);
+      } else {
+        sort.push(values[index]);
+      }
+    }
+  }
+  return sort; // indexes sorted by the best choice
+}
+
+export function findMinIndex(arr, arrayPos) {
   // return array of index's of min values maybe two times the array include 5
   let values = [];
   let min = 0;
   for (let index = 0; index < arr.length; index++) {
     // avoid probs in case arr is empty we return empty array
     if (values.length > 0) {
-      // first case
+      // first case OF VALUE AFTER ADDING ONE
       min = values[0];
     }
     if (arr[min] > arr[index]) {
@@ -41,11 +69,17 @@ export function findMinIndex(arr) {
       values = [];
       values.push(index);
     } else if (arr[min] === arr[index]) {
-      //case two minimums
+      //case two minimums // valid for index===0 also
       values.push(index);
     }
   }
-  return values;
+  if (values.length < 2) {
+    // this mean values array has one value
+    return values;
+  } else {
+    //!!!!! if values array has more than 2 values we should decide the better decision for the shortest solution
+    return sortBestChilds(values, arrayPos);
+  }
 }
 
 export function findWhereToPut(value, arr) {
@@ -108,8 +142,10 @@ export function findInObject(object, array) {
 }
 
 export function returnFirstFromObject(object) {
-  for (let key in object) {
+  console.log(object);
+  for (const key in object) {
     if (object[key].length > 0) {
+      console.log(object[key]);
       return object[key].splice(0, 1); // return first element(last one that had been add to the smallest level) with smaller heuristic
     }
   }
