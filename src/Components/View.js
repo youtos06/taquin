@@ -10,12 +10,13 @@ import {
   //ObjToArray
 } from "./Fonctions";
 import {
-  inArrayList,
+  //inArrayList,
   findMinIndex,
-  findWhereToPut,
+  //findWhereToPut,
   deleteNullArrays,
   lowerByOne,
-  findInVisited
+  findInObject,
+  returnFirstFromObject
 } from "./arrayFunctions";
 import ArrayPosibilities from "./ArrayPosibilities";
 import { toast } from "react-toastify";
@@ -64,7 +65,22 @@ export default function View() {
 
     // build visited object
     let visited = {
+      "0": [],
       "1": [], // normally heuristic value of 1 isn't possible cause min is 2 wrong values but we add for algo case
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": [],
+      "7": [],
+      "8": [],
+      "9": []
+    };
+
+    let history = {
+      // I created this Object to replace the use of history array and array of heuristic values for a better space saving and a better stockage
+      "0": [],
+      "1": [],
       "2": [],
       "3": [],
       "4": [],
@@ -76,17 +92,17 @@ export default function View() {
     };
     if (!validate(startObject)) {
       const init = createTable(startObject); // turn object to table
-      funplay(init, [], [], visited);
+      funplay(init, history, visited);
     }
   };
 
-  const funplay = (arrayState, history, historyHi, visited) => {
+  const funplay = (arrayState, history, visited) => {
     //console.log(history, visited);
     let heuristic = heuristique(arrayState); // for less calculation we create this variable
     if (heuristic === 0) {
       return true;
     }
-    visited[heuristic].push(arrayState); //push into visited with that level
+    visited[heuristic].unshift(arrayState); //push into visited with that level
     let arrayPos = returnTables(arrayState);
 
     setT1(arrayPos[0]);
@@ -95,9 +111,9 @@ export default function View() {
     setT4(arrayPos[3]); // possible ways from  current state
     arrayPos = deleteNullArrays(arrayPos); // possibilities to be saved in history
     for (let pos = 0; pos < arrayPos.length; pos++) {
-      if (findInVisited(visited, arrayPos[pos])) {
-        history.push(arrayPos[pos]);
-        historyHi.push(heuristique(arrayPos[pos]));
+      if (findInObject(visited, arrayPos[pos])) {
+        let tempHeuristic = heuristique(arrayPos[pos]);
+        history[tempHeuristic].unshift(arrayPos);
       }
     }
     //console.log(arrayPos);
@@ -105,7 +121,7 @@ export default function View() {
     visited[heuristic].splice(0, 0, JSON.parse(JSON.stringify(arrayState))); // add as first element of level array for less calculation
     let minIndex = findMinIndex(arrayPosHeuristics); // find min index
 
-    let useOfHistory = false; // if it stayed false we use first value of history as new state of taquin
+    let useOfHistory = false; // if it stayed false no possibilitie will be stocked in memory
     // refil minIndex in case all minIndexes are already visited
     while (minIndex.length !== 0) {
       let index = 0; // for finding value of index => will be used in finding index of min none visited
@@ -113,7 +129,7 @@ export default function View() {
 
       if (minIndex.length > 0) {
         while (index < minIndex.length) {
-          let value = findInVisited(visited, arrayPos[minIndex[index]]); // value in visited + 1
+          let value = findInObject(visited, arrayPos[minIndex[index]]); // value in visited + 1
           if (value) {
             arrayPos.splice(minIndex[index], 1);
             arrayPosHeuristics.splice(minIndex[index], 1);
@@ -143,22 +159,19 @@ export default function View() {
 
     if (useOfHistory) {
       for (let index = 0; index < arrayPos.length; index++) {
-        if (!inArrayList(history, arrayPos[index])) {
+        if (!findInObject(history, arrayPos[index])) {
           let tempHeus = heuristique(arrayPos[index]);
-          let historyIndexAdd = findWhereToPut(tempHeus, historyHi);
-          historyHi.splice(historyIndexAdd, 0, tempHeus);
-          historyHi.splice(historyIndexAdd, 0, arrayPos[index]);
+          history[tempHeus].unshift(arrayPos[index]);
         }
       }
       //console.log(arrayState);
       setTimeout(() => {
-        funplay(arrayState, history, historyHi, visited);
+        funplay(arrayState, history, visited);
       }, 150);
     } else {
       // the possibilities provided by a previous state i sbtter
       toast.info("Return to history Array for a better iteration");
-      let array = history.splice(0, 1);
-      historyHi.splice(0, 1);
+      let array = returnFirstFromObject(history);
       if (array.length !== 3) {
         array = array[0];
       }
@@ -167,7 +180,7 @@ export default function View() {
       setArraySer(arrayState);
 
       setTimeout(() => {
-        funplay(arrayState, history, historyHi, visited);
+        funplay(arrayState, history, visited);
       }, 150);
     }
     return true;

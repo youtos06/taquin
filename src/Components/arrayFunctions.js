@@ -96,12 +96,22 @@ export function lowerByOne(arr) {
 //   '2': [...]
 // } where 1 and 2 is the heuristic of the arrays (like level search)
 
-export function findInVisited(visited, array) {
+export function findInObject(object, array) {
+  //console.log(object);
   let arrayHeuristic = heuristique(array); // level of the array
   //less calculation for visited arrays
-  if (inArrayList(visited[arrayHeuristic], array)) {
+  if (inArrayList(object[arrayHeuristic], array)) {
     // visited[key] => es6 feature
     return true; // array is visited and belongs to it heurstic level
+  }
+  return false;
+}
+
+export function returnFirstFromObject(object) {
+  for (let key in object) {
+    if (object[key].length > 0) {
+      return object[key].splice(0, 1); // return first element(last one that had been add to the smallest level) with smaller heuristic
+    }
   }
   return false;
 }
